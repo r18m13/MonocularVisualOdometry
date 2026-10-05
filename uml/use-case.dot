@@ -1,0 +1,19 @@
+
+digraph UseCase {
+  graph [rankdir=LR, bgcolor="white", fontname="Helvetica", nodesep=0.5, ranksep=0.8];
+  node [fontname="Helvetica"];
+  edge [fontname="Helvetica", arrowsize=0.7];
+  UserNode [shape=box, label="User"];
+  U1 [shape=ellipse, label="Select video source"];
+  U2 [shape=ellipse, label="Process monocular video"];
+  U3 [shape=ellipse, label="Estimate relative camera motion"];
+  U4 [shape=ellipse, label="Accumulate camera pose"];
+  U5 [shape=ellipse, label="Store trajectory"];
+  U6 [shape=ellipse, label="Visualize estimated trajectory"];
+  UserNode -> U1;
+  UserNode -> U2;
+  UserNode -> U6;
+  U2 -> U3 [label=" <<include>> "];
+  U2 -> U4 [label=" <<include>> "];
+  U2 -> U5 [label=" <<include>> "];
+}

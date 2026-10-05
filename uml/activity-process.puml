@@ -1,0 +1,37 @@
+@startuml
+title Map Software - Activity Diagram
+start
+:Receive video path;
+:Open monocular video;
+if (Video opened?) then (yes)
+  :Read video frame rate;
+  if (Valid frame rate?) then (yes)
+    :Select sampled frame pair;
+    :Extract ORB features;
+    if (Enough features/matches?) then (yes)
+      :Estimate essential matrix with RANSAC;
+      if (Pose recovered?) then (yes)
+        :Build relative 4x4 transform;
+        :Update camera pose;
+        :Store pose and graph edge;
+        :Append X/Y position;
+      else (no)
+        :Skip frame pair;
+      endif
+    else (no)
+      :Skip frame pair;
+    endif
+    if (More frame pairs?) then (yes)
+      :Advance frame interval;
+    else (no)
+      :Release video;
+      :Return trajectory;
+    endif
+  else (no)
+    :Report invalid frame rate;
+  endif
+else (no)
+  :Report video-open failure;
+endif
+stop
+@enduml

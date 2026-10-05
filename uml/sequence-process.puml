@@ -1,0 +1,27 @@
+@startuml
+title Map Software - Video Processing Sequence
+actor User
+participant "VisualOdometrySystem" as VOS
+participant "Sensor" as Sensor
+participant "FeatureExtractor" as FE
+participant "Robot" as Robot
+participant "Graph" as GraphObj
+participant "trajectory" as Traj
+
+User -> VOS : process(video_path)
+VOS -> Sensor : use video source
+VOS -> GraphObj : add_node(0, initial_pose)
+
+loop each sampled frame pair
+  VOS -> FE : extract_features(frame0, frame1)
+  FE --> VOS : rotation, translation
+  VOS -> VOS : build 4x4 relative transform
+  VOS -> Robot : update_pose(relative)
+  Robot --> VOS : current pose
+  VOS -> GraphObj : add_node(index, pose)
+  VOS -> GraphObj : add_edge(previous, index, relative)
+  VOS -> Traj : append position
+end
+
+VOS --> User : estimated trajectory
+@enduml

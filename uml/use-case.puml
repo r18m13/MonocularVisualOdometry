@@ -1,0 +1,19 @@
+@startuml
+title Map Software - Use Case Diagram
+left to right direction
+actor "User" as User
+rectangle "Map Software\n(UML-designed visual-odometry prototype)" {
+  usecase "Select video source" as UC1
+  usecase "Process monocular video" as UC2
+  usecase "Estimate relative camera motion" as UC3
+  usecase "Accumulate camera pose" as UC4
+  usecase "Store trajectory" as UC5
+  usecase "Visualize estimated trajectory" as UC6
+}
+User --> UC1
+User --> UC2
+User --> UC6
+UC2 .> UC3 : <<include>>
+UC2 .> UC4 : <<include>>
+UC2 .> UC5 : <<include>>
+@enduml

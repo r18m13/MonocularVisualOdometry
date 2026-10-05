@@ -1,0 +1,66 @@
+
+digraph UMLClass {
+  graph [rankdir=LR, bgcolor="white", fontname="Helvetica", nodesep=0.45, ranksep=0.7];
+  node [shape=plain, fontname="Helvetica"];
+  edge [fontname="Helvetica", fontsize=10, arrowsize=0.7];
+
+  VOS [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5">
+      <TR><TD BGCOLOR="#E8EEF7"><B>VisualOdometrySystem</B></TD></TR>
+      <TR><TD ALIGN="LEFT">- feature_extractor : FeatureExtractor</TD></TR>
+      <TR><TD ALIGN="LEFT">- graph : Graph</TD></TR>
+      <TR><TD ALIGN="LEFT">- robot : Robot</TD></TR>
+      <TR><TD ALIGN="LEFT">- sensor : Sensor</TD></TR>
+      <TR><TD ALIGN="LEFT">- trajectory</TD></TR>
+      <TR><TD ALIGN="LEFT">+ process(video_path, frame_interval_seconds)</TD></TR>
+      <TR><TD ALIGN="LEFT">+ plot_trajectory(positions)</TD></TR>
+    </TABLE>
+  >];
+  FE [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5">
+      <TR><TD BGCOLOR="#E8EEF7"><B>FeatureExtractor</B></TD></TR>
+      <TR><TD ALIGN="LEFT">- camera_matrix</TD></TR>
+      <TR><TD ALIGN="LEFT">- nfeatures</TD></TR>
+      <TR><TD ALIGN="LEFT">+ extract_features(frame_0, frame_1)</TD></TR>
+      <TR><TD ALIGN="LEFT">- _camera_matrix(frame)</TD></TR>
+    </TABLE>
+  >];
+  RobotNode [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5">
+      <TR><TD BGCOLOR="#E8EEF7"><B>Robot</B></TD></TR>
+      <TR><TD ALIGN="LEFT">- pose</TD></TR>
+      <TR><TD ALIGN="LEFT">+ update_pose(relative_pose)</TD></TR>
+    </TABLE>
+  >];
+  GraphNode [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5">
+      <TR><TD BGCOLOR="#E8EEF7"><B>Graph</B></TD></TR>
+      <TR><TD ALIGN="LEFT">- graph : nx.Graph</TD></TR>
+      <TR><TD ALIGN="LEFT">+ add_node(index, pose)</TD></TR>
+      <TR><TD ALIGN="LEFT">+ add_edge(start, end, transformation)</TD></TR>
+      <TR><TD ALIGN="LEFT">+ optimize_graph()</TD></TR>
+    </TABLE>
+  >];
+  SensorNode [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5">
+      <TR><TD BGCOLOR="#E8EEF7"><B>Sensor</B></TD></TR>
+      <TR><TD ALIGN="LEFT">- type</TD></TR>
+      <TR><TD ALIGN="LEFT">- data</TD></TR>
+      <TR><TD ALIGN="LEFT">+ acquire_data(path)</TD></TR>
+    </TABLE>
+  >];
+  UserNode [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5">
+      <TR><TD BGCOLOR="#E8EEF7"><B>User</B></TD></TR>
+      <TR><TD ALIGN="LEFT">- id</TD></TR>
+      <TR><TD ALIGN="LEFT">- video_path</TD></TR>
+      <TR><TD ALIGN="LEFT">+ request_data_source()</TD></TR>
+    </TABLE>
+  >];
+
+  VOS -> FE [label="uses"];
+  VOS -> RobotNode [label="uses"];
+  VOS -> GraphNode [label="uses"];
+  VOS -> SensorNode [label="owns"];
+  UserNode -> SensorNode [label="provides source"];
+}

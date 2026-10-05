@@ -1,0 +1,43 @@
+
+digraph Activity {
+  graph [rankdir=TB, bgcolor="white", fontname="Helvetica", nodesep=0.45, ranksep=0.45];
+  node [shape=box, style="rounded", fontname="Helvetica"];
+  edge [fontname="Helvetica", fontsize=9, arrowsize=0.7];
+  Start [shape=circle, label="", width=0.25, fixedsize=true];
+  A [label="Receive video path"];
+  B [label="Open monocular video"];
+  C [shape=diamond, label="Video opened?"];
+  D [label="Read frame rate"];
+  E [shape=diamond, label="Valid frame rate?"];
+  F [label="Select sampled frame pair"];
+  G [label="Extract ORB features"];
+  H [shape=diamond, label="Enough features/matches?"];
+  I [label="Estimate essential matrix\\nwith RANSAC"];
+  J [shape=diamond, label="Pose recovered?"];
+  K [label="Build relative 4x4 transform"];
+  L [label="Update camera pose"];
+  M [label="Store pose and graph edge"];
+  N [label="Append X/Y position"];
+  O [shape=diamond, label="More frame pairs?"];
+  P [label="Skip frame pair"];
+  Q [label="Release video"];
+  R [shape=doublecircle, label="Return trajectory", width=1.0];
+  S [shape=box, label="Report error"];
+  Start -> A -> B -> C;
+  C -> D [label="yes"];
+  C -> S [label="no"];
+  D -> E;
+  E -> F [label="yes"];
+  E -> S [label="no"];
+  F -> G -> H;
+  H -> I [label="yes"];
+  H -> P [label="no"];
+  I -> J;
+  J -> K [label="yes"];
+  J -> P [label="no"];
+  K -> L -> M -> N -> O;
+  P -> O;
+  O -> F [label="yes"];
+  O -> Q [label="no"];
+  Q -> R;
+}

@@ -1,0 +1,67 @@
+@startuml
+title Map Software - Class Diagram
+skinparam classAttributeIconSize 0
+
+class User {
+  - id
+  - video_path
+  + request_data_source()
+}
+
+class Sensor {
+  - type
+  - data
+  + acquire_data(path)
+}
+
+class VisualOdometrySystem {
+  - feature_extractor : FeatureExtractor
+  - graph : Graph
+  - robot : Robot
+  - sensor : Sensor
+  - trajectory
+  + process(video_path, frame_interval_seconds)
+  + plot_trajectory(positions)
+  - _homogeneous_transform(rotation, translation)
+}
+
+class FeatureExtractor {
+  - camera_matrix
+  - nfeatures
+  + extract_features(frame_0, frame_1)
+  - _camera_matrix(frame)
+}
+
+class Robot {
+  - pose
+  + update_pose(relative_pose)
+}
+
+class Graph {
+  - graph : nx.Graph
+  + add_node(index, pose)
+  + add_edge(start, end, transformation)
+  + optimize_graph()
+}
+
+User --> Sensor : selects / supplies video source
+VisualOdometrySystem *-- FeatureExtractor
+VisualOdometrySystem *-- Graph
+VisualOdometrySystem *-- Robot
+VisualOdometrySystem *-- Sensor
+VisualOdometrySystem --> FeatureExtractor : estimate motion
+VisualOdometrySystem --> Robot : update pose
+VisualOdometrySystem --> Graph : store poses/edges
+VisualOdometrySystem --> Sensor : owns input abstraction
+
+note right of Graph
+Stores trajectory graph data.
+No graph optimization or
+loop-closure correction is implemented.
+end note
+
+note bottom of FeatureExtractor
+Monocular translation has unknown
+absolute scale.
+end note
+@enduml

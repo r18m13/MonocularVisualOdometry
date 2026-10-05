@@ -1,0 +1,21 @@
+
+digraph Sequence {
+  graph [rankdir=TB, bgcolor="white", fontname="Helvetica", nodesep=0.55, ranksep=0.55];
+  node [shape=box, style="rounded", fontname="Helvetica"];
+  edge [fontname="Helvetica", fontsize=9, arrowsize=0.7];
+  UserNode [label="User"];
+  VOS [label="VisualOdometrySystem"];
+  FE [label="FeatureExtractor"];
+  RobotNode [label="Robot"];
+  GraphNode [label="Graph"];
+  Traj [label="trajectory"];
+  UserNode -> VOS [label="process(video_path)"];
+  VOS -> GraphNode [label="add_node(0, initial pose)"];
+  VOS -> FE [label="extract_features(frame0, frame1)"];
+  FE -> VOS [label="rotation, translation"];
+  VOS -> RobotNode [label="update_pose(relative)"];
+  RobotNode -> VOS [label="current pose"];
+  VOS -> GraphNode [label="add_node / add_edge"];
+  VOS -> Traj [label="append position"];
+  VOS -> UserNode [label="estimated trajectory"];
+}
