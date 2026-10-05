@@ -1,4 +1,4 @@
-# Map Software
+# Monocular Visual Odometry
 
 ## UML / StarUML
 
@@ -8,7 +8,7 @@ and activity diagrams tied to the actual Python classes and methods.
 
 ## Project purpose
 
-**Map Software is a software-engineering/UML project designed to demonstrate object-oriented analysis, design, and implementation using StarUML.**
+**Monocular Visual Odometry is a software-engineering/UML project designed to demonstrate object-oriented analysis, design, and implementation using StarUML.**
 
 The Python implementation is a small working prototype of the design. It processes a video with a monocular camera, estimates relative camera motion from visual features, accumulates those motions into a trajectory, and visualizes the trajectory.
 
